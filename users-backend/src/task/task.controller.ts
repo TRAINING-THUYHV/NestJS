@@ -36,6 +36,7 @@ export class TaskController {
 
   @Delete(':id')
   deleteUser(@Param() params) {
+    console.log(params);
     return this.taskService.delete(params.id);
   }
 }
