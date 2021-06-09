@@ -17,4 +17,13 @@ export class AuthService {
   async create(user: User): Promise<User> {
     return await this.userRepo.save(user);
   }
+
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.userRepo.findOne(username);
+    if (user && user.password === pass) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
 }
