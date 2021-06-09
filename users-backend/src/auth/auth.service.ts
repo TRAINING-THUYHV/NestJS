@@ -10,7 +10,7 @@ export class AuthService {
     private readonly userRepo: Repository<User>,
   ) {}
 
-  async findOne(email: string): Promise<User> {
+  async findOne(email: any): Promise<User> {
     return await this.userRepo.findOne({ where: { email } });
   }
 
