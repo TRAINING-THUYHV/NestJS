@@ -1,0 +1,21 @@
+swagger (Tạo tương tự postman)
+
+nest g module users
+nest g service users
+nest g controller users
+nest g class users/user.entity
+
+// typeorm với mysql
+npm install --save @nestjs/typeorm typeorm mysql
+
+Cấu hình trong app.module
+TypeOrmModule.forRoot({
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: '',
+  database: 'nestjs_demo',
+  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  synchronize: true,
+}),
