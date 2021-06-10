@@ -1,9 +1,11 @@
-import { BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { User } from '../users/user.entity';
 import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
+import { LocalAuthGuard } from './local-auth.guard';
+import { LoginGuard } from './login.guard';
  
 @Controller('api/auth')
 export class AuthController {
@@ -15,7 +17,7 @@ export class AuthController {
   @Post('login')
   async getData(@Body() user: User, @Res({ passthrough: true }) response: Response) {
     const userDB = await this.authService.findOne(user.email);
-    // Check exist user
+    // Check exist user  
     if (!userDB) {
       throw new BadRequestException('User not exist!');
     }
@@ -42,7 +44,8 @@ export class AuthController {
 
     return result;
   }
-
+  
+  @UseGuards(LoginGuard)
   @Get('user')
   async user(@Req() request: Request) {
     try {
