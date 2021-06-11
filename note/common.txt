@@ -5,6 +5,9 @@ nest g service users
 nest g controller users
 nest g class users/user.entity
 
+// Không muốn thêm spec thì
+--no-spec
+
 // typeorm với mysql
 npm install --save @nestjs/typeorm typeorm mysql
 
