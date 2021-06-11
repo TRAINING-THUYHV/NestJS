@@ -17,4 +17,14 @@ export class AuthService {
   async create(user: User): Promise<User> {
     return await this.userRepo.save(user);
   }
+
+  async googleLogin(req) {
+    if (!req.user) {
+      return "No user"; 
+    }
+    return {
+      message : "ok",
+      user : req.user
+    }
+  }
 }

@@ -5,12 +5,15 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { LoginGuard } from './login.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { UsersService } from '../users/users.service';
  
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private usersService: UsersService,
     ) {}
 
   @Post('login')
@@ -26,6 +29,32 @@ export class AuthController {
     }
 
     const jwt = await this.jwtService.sign({email: userDB.email});
+
+    response.cookie('jwt', jwt, { httpOnly: true });
+
+    return {
+      message: 'succsess',
+      access_token: jwt
+    };
+  }
+
+  @Get('gooogle-login')
+  @UseGuards(AuthGuard('google'))  
+  async gooogleLogin(@Req() req) { }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google')) 
+  async gooogleAuthRedirect(@Req() req, @Res({ passthrough: true }) response: Response) {
+    // return this.authService.googleLogin(req);
+    const user = await req.user;
+    const userDB = await this.authService.findOne(user.email);
+    // Not exist in db then save new
+    if (!userDB) {
+      user.typeLogin = "google";
+      const save = await this.usersService.create(user);
+    }
+
+    const jwt = await this.jwtService.sign({email: user.email});
 
     response.cookie('jwt', jwt, { httpOnly: true });
 
