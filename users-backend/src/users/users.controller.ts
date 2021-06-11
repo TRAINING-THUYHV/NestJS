@@ -14,13 +14,17 @@ export class UsersController {
     
     @Get()
     async getAllUsers() {
-        return await this.usersService.findAll();
+        let users = await this.usersService.findAll();
+        users.forEach((user) => { delete(user.password) });
+        return users;
     }
 
     @Get(':id')
     @Roles(Role.Admin, Role.User)
     async getById(@Param('id') id: string) {
-        return await this.usersService.findOne(id);
+        const user = await this.usersService.findOne(id);
+        delete(user.password);
+        return user;
     }
 
     @Post()
