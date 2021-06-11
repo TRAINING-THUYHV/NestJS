@@ -4,7 +4,6 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { LoginGuard } from './login.guard';
 
 @Module({
   imports: [
@@ -14,11 +13,11 @@ import { LoginGuard } from './login.guard';
       signOptions: {expiresIn: '1d'},
     }),
   ],
-  providers: [AuthService, LoginGuard],
+  providers: [AuthService],
   controllers: [AuthController],
   exports: [
-    LoginGuard,
-    JwtModule
+    JwtModule,
+    AuthService
   ]
 })
 export class AuthModule {}

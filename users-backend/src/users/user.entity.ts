@@ -14,8 +14,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  role: string;
+
   @CreateDateColumn({ name: 'create_at', type: 'timestamp' })
   ceatedAt: Date
-
-  
 }
