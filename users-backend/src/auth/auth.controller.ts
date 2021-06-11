@@ -4,10 +4,9 @@ import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
-import { LocalAuthGuard } from './local-auth.guard';
 import { LoginGuard } from './login.guard';
  
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -31,7 +30,8 @@ export class AuthController {
     response.cookie('jwt', jwt, { httpOnly: true });
 
     return {
-      message: 'succsess'
+      message: 'succsess',
+      access_token: jwt
     };
   }
 
@@ -47,7 +47,7 @@ export class AuthController {
   
   @UseGuards(LoginGuard)
   @Get('user')
-  async user(@Req() request: Request) {
+  async userLogin(@Req() request: Request) {
     try {
       const cookie = request.cookies['jwt'];
       const data = await this.jwtService.verifyAsync(cookie);

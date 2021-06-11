@@ -9,7 +9,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
-    private jwtService: JwtService
   ) {}
 
   async findOne(email: any): Promise<User> {
@@ -18,22 +17,5 @@ export class AuthService {
 
   async create(user: User): Promise<User> {
     return await this.userRepo.save(user);
-  }
-
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.userRepo.findOne({ where: { email } });
-    if (user) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
-  async login(user: any) {
-    console.log(user);
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
   }
 }

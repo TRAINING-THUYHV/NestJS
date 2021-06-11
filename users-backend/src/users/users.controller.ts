@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { LoginGuard } from 'src/auth/login.guard';
 import { UsersService } from './users.service';
 
-@Controller('api/users')
+@Controller('users')
 export class UsersController {
     constructor(private usersService: UsersService){}
     
