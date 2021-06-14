@@ -33,3 +33,8 @@ npm install class-validator class-transformer
 
 
 ===========================Thư viện CASL ===================================
+https://casl.js.org/v5/en/guide/intro
+Doc
+https://github.com/typestack/class-validator#validation-messages
+// Code sample
+https://github.com/stalniy/casl
