@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, BadRequestException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../common/role.enum';
@@ -28,6 +28,12 @@ export class RolesGuard implements CanActivate {
 
     const user = await this.authService.findOne(loginInfo.email);
 
-    return requiredRoles.some((role) => user.role?.includes(role));
+    const hasRole = await requiredRoles.some((role) => user.role?.includes(role));
+
+    if (!hasRole) {
+      throw new BadRequestException('User not have access!');
+    }
+
+    return true;
   }
 }

@@ -43,7 +43,7 @@ export class AuthController {
   async gooogleLogin(@Req() req) { }
 
   @Get('google/callback')
-  @UseGuards(AuthGuard('google')) 
+  @UseGuards(AuthGuard('google'))
   async gooogleAuthRedirect(@Req() req, @Res({ passthrough: true }) response: Response) {
     // return this.authService.googleLogin(req);
     const user = await req.user;

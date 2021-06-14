@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
 import { Role } from '../common/role.enum';
 import { LoginGuard } from '../auth/login.guard';
 import { User } from './user.entity';
@@ -21,7 +21,7 @@ export class UsersController {
 
     @Get(':id')
     @Roles(Role.Admin, Role.User)
-    async getById(@Param('id') id: string) {
+    async getById(@Param('id', ParseIntPipe) id: number) {
         const user = await this.usersService.findOne(id);
         delete(user.password);
         return user;
